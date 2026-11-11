@@ -18,6 +18,10 @@ test('one static offline entry and explicitly local ES module import',async()=>{
  assert.match(js,/node\('p','post-content',post\.text\)/);
  assert.match(js,/element\.textContent=text/);
  assert.match(js,/localStorage/);
+ assert.doesNotMatch(html,/maxlength="280"/);
+ assert.match(js,/limitComposerText\(composer\.value\)/);
+ assert.match(js,/addEventListener\('storage'/);
+ assert.match(js,/store\.update\(transform\)/);
 });
 test('app wires all interactive controls to actual DOM identities',async()=>{
  const html=await file('index.html'),js=await file('src/app.mjs');

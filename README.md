@@ -46,6 +46,13 @@ or that satellites are requesting annual leave after the latest self-reply.
   local self-replies. No network requests are performed.
 - **Local recovery:** State is stored in this browser's localStorage when
   available, with corrupt data rejected and errors reported.
+- **Multi-tab safety:** Storage events refresh visible posts, and a pre-write
+  stale-snapshot check rejects conflicting operations before overwriting posts.
+  Drafts remain in the composer for explicit retry. Because localStorage has
+  no atomic compare-and-swap, truly simultaneous writes across tabs are not
+  transactionally protected.
+- **Unicode:** Composer and core both count Unicode code points, not UTF-16
+  units. The input accepts 280 emoji, trimming excess pasted code points.
 - **Offline-first:** Native HTML/CSS/ES modules; no NPM install, frameworks,
   build server, fonts, images, cookies, analytics or runtime dependencies.
 
@@ -83,6 +90,7 @@ Enable GitHub Pages with **GitHub Actions** as the source to publish the site.
 
 ## Architecture and privacy
 
+- `src/archive-store.mjs`: offline storage sync and stale-write rejection.
 - `src/core.mjs`: pure deterministic warning/reply generator, bounded archive
   validation, receipt serialization and factual field-guide content.
 - `src/app.mjs`: local browser UI and explicit DOM event handlers.

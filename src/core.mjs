@@ -80,6 +80,11 @@ export const EARTH_FACTS = Object.freeze([
   Object.freeze({title:'Stars change with latitude',
     detail:'As observers travel north or south, the apparent height of celestial poles and visible constellations change in ways predicted by a rotating spherical Earth.'})
 ]);
+/** Shared UI/core Unicode code-point input budget, not UTF-16 maxlength. */
+export function limitComposerText(value){
+  if(typeof value!=='string')throw new TypeError('Text required');
+  return Array.from(value).slice(0,MAX_CHARACTERS).join('');
+}
 export function initialState(){
   return {schema:1,nextId:1,posts:[],warningIndex:0,replyIndex:0};
 }

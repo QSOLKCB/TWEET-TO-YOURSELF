@@ -54,3 +54,20 @@ network upload. A CSP forbids outbound connections.
 Nothing produced by the app should be interpreted as an actual security
 warning. Exported receipts are personal joke text saved by the browser
 to a file on the user's device.
+
+
+## Offline multi-tab behavior
+
+The browser app checks its last observed localStorage value before every
+timeline write or clear. If another tab has updated the archive, the stale
+operation is **rejected** and the current archive is displayed instead.
+Composer drafts remain available for review and retry. Storage events also
+refresh a tab's timeline after external changes.
+
+This prevents the ordinary sequence where tab A adds a post and stale tab B
+generates a fake warning from silently overwriting tab A's work. It is not a
+true multiwriter transaction: localStorage has no compare-and-swap, so
+exactly simultaneous cross-tab writes are still outside the guarantee.
+
+The composer and core both count Unicode *code points*. A single emoji counts
+as one character even if it occupies two UTF-16 code units.

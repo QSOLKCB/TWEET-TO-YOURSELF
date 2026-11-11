@@ -1,21 +1,48 @@
 // SPDX-License-Identifier: Apache-2.0
 // No social-media connection, no external API, no actual AI or surveillance data.
 import {STORAGE_KEY,MAX_CHARACTERS,initialState,hydrateState,addPost,
-  automaticReply,nextWarning,receipt,HAT_STEPS,EARTH_FACTS} from './core.mjs';
+  automaticReply,nextWarning,receipt,HAT_STEPS,EARTH_FACTS,limitComposerText} from './core.mjs';
+import {ArchiveStore,StaleArchiveError} from './archive-store.mjs';
 
 const $=id=>document.getElementById(id);
-let state=initialState(),replyTarget=null,grassTouches=0,earthIndex=0;
-let savedNotice='';
+let store,savedNotice='';
 try{
-  const raw=localStorage.getItem(STORAGE_KEY);
-  if(raw)state=hydrateState(JSON.parse(raw));
+  store=new ArchiveStore(localStorage);
 }catch{
-  state=initialState();
-  savedNotice='Previous local archive was unreadable. Started a clean offline timeline.';
+  // Never overwrite a corrupt persisted archive with an empty new session.
+  store=new ArchiveStore(null);
+  savedNotice='Saved archive is invalid or storage unavailable. In-memory mode: previous saved data was NOT overwritten. Export receipts before closing.';
 }
-function save(){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true;}
-  catch{$('feedStatus').textContent='Local storage unavailable or full. Export the receipts to save your posts.';return false;}
+let state=store.state,replyTarget=null,grassTouches=0,earthIndex=0;
+function mutationError(error){
+  if(error instanceof StaleArchiveError){
+    state=store.state;
+    renderFeed();
+    if(replyTarget!==null&&!state.posts.some(p=>p.id===replyTarget))resetReply();
+    $('feedStatus').textContent='Another tab changed the timeline. Your action was NOT saved; newest posts loaded. Your unsent draft is preserved. Review and retry.';
+  }else{
+    $('feedStatus').textContent='NOT SAVED: '+error.message+' (export any existing receipts if storage is unavailable).';
+  }
+}
+function persist(transform,message){
+  try{
+    state=store.update(transform);
+    renderFeed();
+    $('feedStatus').textContent=message;
+    return true;
+  }catch(error){mutationError(error);return false;}
+}
+if(store.persistent){
+  window.addEventListener('storage',event=>{
+    if(event.key!==STORAGE_KEY&&event.key!==null)return;
+    try{
+      state=store.refresh();renderFeed();
+      if(replyTarget!==null&&!state.posts.some(p=>p.id===replyTarget))resetReply();
+      $('feedStatus').textContent='Timeline updated from another tab; your unsent draft was preserved.';
+    }catch{
+      $('feedStatus').textContent='Another tab has an invalid archive. This tab will not overwrite it.';
+    }
+  });
 }
 function node(tag,cls,text){
   const element=document.createElement(tag);
@@ -68,16 +95,19 @@ function resetReply(){
   $('cancelReply').hidden=true;
 }
 function updateCount(){
-  $('charCount').textContent=Array.from($('compose').value).length+' / '+MAX_CHARACTERS;
+  const composer=$('compose'),limited=limitComposerText(composer.value);
+  if(limited!==composer.value){
+    composer.value=limited;
+    composer.setSelectionRange(composer.value.length,composer.value.length);
+    $('feedStatus').textContent='280 Unicode characters maximum; extra pasted characters were trimmed.';
+  }
+  $('charCount').textContent=Array.from(composer.value).length+' / '+MAX_CHARACTERS;
 }
 function submit(text,parent=null){
-  try{
-    state=addPost(state,text,parent);
-    resetReply();
-    $('compose').value='';updateCount();
-    $('feedStatus').textContent='Self-reply archived locally. Outside opinions received: zero.';
-    save();renderFeed();
-  }catch(error){$('feedStatus').textContent='REJECTED: '+error.message;}
+  if(persist(current=>addPost(current,text,parent),
+    'Self-reply archived locally. Outside opinions received: zero.')){
+    resetReply();$('compose').value='';updateCount();
+  }
 }
 $('postForm').addEventListener('submit',event=>{
   event.preventDefault();
@@ -86,18 +116,17 @@ $('postForm').addEventListener('submit',event=>{
 $('compose').addEventListener('input',updateCount);
 $('cancelReply').addEventListener('click',resetReply);
 $('autoReply').addEventListener('click',()=>{
-  try{
-    state=automaticReply(state);resetReply();$('compose').value='';updateCount();
-    $('feedStatus').textContent='Your AI opponent (also you) has responded. No LLM was harmed.';
-    save();renderFeed();
-  }catch(error){$('feedStatus').textContent='REJECTED: '+error.message;}
+  if(persist(automaticReply,'Your AI opponent (also you) has responded. No LLM was harmed.')){
+    resetReply();$('compose').value='';updateCount();
+  }
 });
 $('clearPosts').addEventListener('click',()=>{
   if(!window.confirm('Delete all local self-replies from this browser? This cannot be undone.'))return;
-  state=initialState();resetReply();$('compose').value='';updateCount();
-  try{localStorage.removeItem(STORAGE_KEY);}catch{}
-  $('feedStatus').textContent='Echo chamber emptied. You may now disagree with yourself anew.';
-  renderFeed();
+  try{
+    state=store.clear();resetReply();$('compose').value='';updateCount();
+    renderFeed();
+    $('feedStatus').textContent='Echo chamber emptied. You may now disagree with yourself anew.';
+  }catch(error){mutationError(error);}
 });
 function downloadJson(content,name){
   const blob=new Blob([JSON.stringify(content,null,2)+'\n'],{type:'application/json'});
@@ -112,8 +141,10 @@ $('downloadReceipt').addEventListener('click',()=>{
   $('feedStatus').textContent='Receipts downloaded. This did not post anything online.';
 });
 $('scan').addEventListener('click',()=>{
-  const output=nextWarning(state);state=output.state;save();
-  const warning=output.warning;
+  let warning=null;
+  if(!persist(current=>{
+    const output=nextWarning(current);warning=output.warning;return output.state;
+  },'Imaginary alert generated. Timeline preserved.'))return;
   $('warningTitle').textContent=warning.title;
   $('warningMessage').textContent=warning.message;
   $('warningAgency').textContent='SOURCE: '+warning.agency.toUpperCase();

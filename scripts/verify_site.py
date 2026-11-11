@@ -9,7 +9,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("index.html", "style.css", "src/app.mjs", "src/core.mjs")
+FILES = ("index.html", "style.css", "src/app.mjs", "src/core.mjs", "src/archive-store.mjs")
 
 class Resources(HTMLParser):
     def __init__(self):
@@ -48,7 +48,7 @@ def verify(root: Path) -> None:
             raise ValueError("missing/escaping runtime asset: " + path)
     if "connect-src 'none'" not in html or "script-src 'self'" not in html:
         raise ValueError("offline CSP missing")
-    if "from './core.mjs'" not in js:
+    if "from './core.mjs'" not in js or "from './archive-store.mjs'" not in js:
         raise ValueError("required pure-core ES module import missing")
     if re.search(r"\b(fetch|XMLHttpRequest|WebSocket)\s*\(", js):
         raise ValueError("networking primitive in runtime")
@@ -56,7 +56,7 @@ def verify(root: Path) -> None:
         raise ValueError("unsafe DOM HTML injection")
     if re.search(r"@import|url\s*\(\s*['\"]?https?://", css, re.I):
         raise ValueError("external CSS resource")
-    print("PASS: 4 offline runtime files, local dependencies, CSP, DOM injection and resource bounds")
+    print("PASS: 5 offline runtime files, local dependencies, CSP, DOM injection and resource bounds")
 
 if __name__ == "__main__":
     verify(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT)
