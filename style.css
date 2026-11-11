@@ -154,3 +154,28 @@ footer .footer-bottom{color:var(--accent);font-weight:700}
 @media(max-width:650px){.topbar{align-items:flex-start}.topbar nav{width:100%;justify-content:flex-start}.hero{padding:42px 18px}.hero h1{font-size:clamp(34px,8vw,50px)}.hero-sub{font-size:14px}.dashboard,.field-guide{padding-left:13px;padding-right:13px}.sidebar{grid-template-columns:minmax(0,1fr)}.indicator{white-space:normal}.self-badge{display:none}.metrics>div{padding:13px 9px}.metrics span{font-size:8px}.composer{padding:14px}.compose-actions{flex-wrap:wrap;justify-content:flex-end}.post-button{font-size:10px}.guide{padding:18px}.earth .planet{width:95px;height:95px;right:15px;top:48px;opacity:.35}.earth .planet span{font-size:8px}.ticker b{display:none}.ticker span{font-size:9px}}
 @media(max-width:360px){.logo{font-size:12px}.topbar nav{gap:12px}.topbar nav a{font-size:10px}.hero h1{font-size:31px}.tools button{flex-basis:100%}.metrics strong{font-size:21px}.timeline-top{align-items:start;flex-direction:column;gap:2px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+
+/* REPLY REACTOR 3000: source-pinned VANILLAJS GF(3) game laboratory */
+.reactor-section{padding:48px clamp(16px,4vw,72px) 54px;border-top:1px solid #304d42;background:radial-gradient(ellipse at 5% 0%,#1b3b31 0%,transparent 49%),#0c171c}
+.reactor-section .section-heading h2 span{color:var(--accent)}
+.reactor-grid-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,1fr);gap:20px}
+.reactor-visual,.reactor-controls{padding:22px;min-width:0}
+.reactor-visual{background:linear-gradient(145deg,#10272b,#0d191f);border-color:#477268}
+#reactorGrid{width:100%;height:auto;display:block;margin:16px auto 0;max-height:430px;background:radial-gradient(ellipse at center,#122e31,#0b1922 75%);border:1px solid #35564d;border-radius:7px}
+.reactor-legend{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;margin:15px 0;color:#adcdc1;font:700 10px/1.5 monospace}
+.reactor-status{padding:13px 15px;border:1px solid #5c8165;border-radius:7px;background:#1b3029;color:#c1f0a1;font:700 12px/1.7 monospace;min-height:66px}
+.reactor-controls h3{font-size:clamp(22px,2.8vw,37px);letter-spacing:-.05em;line-height:1.1;margin:23px 0 16px}
+.reactor-controls h3 em{font-style:normal;color:var(--accent)}
+.reactor-controls>p:not(.small-status):not(.reactor-disclaimer){color:#b0c6bc;font-size:13px;line-height:1.8}
+.reactor-controls>p strong{color:#e6f6cb}
+.reactor-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:22px 0 12px}
+.reactor-stats div{min-width:0;padding:15px 9px;border:1px solid #2f4b43;border-radius:6px;background:#0d201f}
+.reactor-stats strong{display:block;color:#bff88b;font:800 clamp(15px,1.65vw,24px)/1.3 monospace;white-space:nowrap}
+.reactor-stats span{display:block;color:#91b5a8;font:700 9px/1.4 monospace;margin-top:6px}
+.reactor-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.reactor-buttons button{min-width:0;font-size:11px;padding:12px 9px}
+.reactor-disclaimer{font:10px/1.8 monospace;color:#9ab9a7;margin-top:20px;padding-top:16px;border-top:1px solid #385548}
+#reactorCount,#reactorPlaybackStatus{overflow-wrap:anywhere}
+@media(max-width:900px){.reactor-grid-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:450px){.reactor-section{padding:32px 13px}.reactor-visual,.reactor-controls{padding:13px}.reactor-buttons button{font-size:10px}.reactor-stats div{padding:10px 5px}.reactor-stats span{font-size:8px}}

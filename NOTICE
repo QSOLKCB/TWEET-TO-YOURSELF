@@ -1,0 +1,20 @@
+TWEET-TO-YOURSELF — REPLY REACTOR 3000 (2026)
+Copyright 2026 QSOL-IMC and contributors.
+
+This application includes byte-identical source from the VANILLAJS v1.7.0
+release, developed by QSOL-IMC / Trent Slade and contributors, under Apache-2.0.
+
+Original upstream: QSOLKCB/VANILLAJS
+Resolved release commit: 8774be1cc1f4a4cf234f71622c304944cd0ecba5
+Copied upstream modules: modules/gf3/index.js,
+modules/symbolic-events/index.js, modules/audio2d/index.js.
+Local paths and exact Git blob IDs: vendor/vanillajs/SOURCE.md.
+
+VANILLAJS's QGAME-MATH-001 research records conceptual references to
+QEC-ADA, SONIFICATION and GALAXY; no source code from those projects is copied
+by this integration. The source-pinned JavaScript modules are Apache-2.0.
+
+The rest of this game's satirical UI, exact self-reply projection and authoring
+logic are original code licensed under the repository's Apache License 2.0.
+The application does not provide quantum mechanics, social-media posting,
+AI-generated conspiracy claims or surveillance detection.

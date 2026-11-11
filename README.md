@@ -16,6 +16,34 @@
 
 ---
 
+## 👽 NEW — REPLY REACTOR 3000 (VANILLAJS v1.7.0)
+
+**We've turned arguing with yourself into a mathematically exact game.**
+
+The new on-page **REPLY REACTOR 3000** uses three **unchanged, source-pinned**
+[Apache-2.0 VANILLAJS v1.7.0](https://github.com/QSOLKCB/VANILLAJS/releases/tag/v1.7.0)
+modules: **GF(3)**, **symbolic-events** and **audio2d**.
+
+- Every new top-level post moves your two-coordinate *ego state* by +1 in GF(3).
+- Every self-reply applies a reversible GF(3) shear and increments the second coordinate.
+- Reach **[2,1]** for the entirely meaningless **“Win an Argument Against Yourself”** achievement.
+- Watch an always-offline 3×3 ternary-state grid update from your local posts.
+- Export a versioned, **post-text-free symbolic event log** or an exact,
+  **48 kHz mono PCM16LE reference WAV** (up to eight seconds).
+- Play the reference score through explicitly opted-in browser audio without
+  altering the source posts, numerical state or event identities.
+- Score only the most recent 32 posts: older messages stay in the timeline
+  but are outside the current 32-tick scoring window.
+
+This is a **classical finite-state puzzle with a declared musical mapping**.
+It is not quantum computation, a physical surveillance detector, or generative AI.
+Audio-device resampling is presentation only; the generated WAV is the reference.
+
+[Read the mathematics and reproducibility contract](docs/REPLY_REACTOR.md) ·
+[Inspect pinned source SHAs](vendor/vanillajs/SOURCE.md)
+
+---
+
 ## Why argue with strangers when you can argue with yourself?
 
 TWEET-TO-YOURSELF is an open-source, absurdist, standalone HTML application.
@@ -75,6 +103,8 @@ Node's built-in test runner, no packages required:
 node --test tests/*.test.mjs
 node --check src/core.mjs
 node --check src/app.mjs
+node --check src/reply-reactor.mjs
+node --check src/reply-reactor-ui.mjs
 ```
 
 To verify the deployment payload using only Python's standard library:
@@ -94,6 +124,11 @@ Enable GitHub Pages with **GitHub Actions** as the source to publish the site.
 - `src/core.mjs`: pure deterministic warning/reply generator, bounded archive
   validation, receipt serialization and factual field-guide content.
 - `src/app.mjs`: local browser UI and explicit DOM event handlers.
+- `src/reply-reactor.mjs`: pure, bounded, 32-tick GF(3) game projection,
+  symbolic score and auditable JSON/WAV reference.
+- `src/reply-reactor-ui.mjs`: 9-state SVG graph, achievement and opt-in audio.
+- `vendor/vanillajs/{gf3,symbolic-events,audio2d}/index.js`: byte-pinned
+  upstream modules (see `vendor/vanillajs/SOURCE.md`).
 - `index.html` / `style.css`: accessible, responsive self-reply cockpit.
 - `tests/`: Node behavioral and static-site contract tests.
 - `scripts/verify_site.py`: standard-library source packaging checks.

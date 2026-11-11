@@ -9,7 +9,14 @@ from pathlib import Path
 from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("index.html", "style.css", "src/app.mjs", "src/core.mjs", "src/archive-store.mjs")
+FILES = (
+    "index.html", "style.css",
+    "src/app.mjs", "src/core.mjs", "src/archive-store.mjs",
+    "src/reply-reactor.mjs", "src/reply-reactor-ui.mjs",
+    "vendor/vanillajs/gf3/index.js",
+    "vendor/vanillajs/symbolic-events/index.js",
+    "vendor/vanillajs/audio2d/index.js",
+)
 
 class Resources(HTMLParser):
     def __init__(self):
@@ -48,15 +55,25 @@ def verify(root: Path) -> None:
             raise ValueError("missing/escaping runtime asset: " + path)
     if "connect-src 'none'" not in html or "script-src 'self'" not in html:
         raise ValueError("offline CSP missing")
-    if "from './core.mjs'" not in js or "from './archive-store.mjs'" not in js:
-        raise ValueError("required pure-core ES module import missing")
+    if "from './core.mjs'" not in js or "from './archive-store.mjs'" not in js or "from './reply-reactor-ui.mjs'" not in js:
+        raise ValueError("required source-owned ES module import missing")
+    # Every executable module must resolve imports locally, including the
+    # pinned VANILLAJS vendored modules; fail closed on escaping paths.
+    for path in FILES:
+        if not path.endswith((".mjs", ".js")):
+            continue
+        source = (root / path).read_text(encoding="utf-8")
+        for spec in re.findall(r"""from\s+['"](\.[^'"]+)['"]""", source):
+            target = ((root / path).parent / spec).resolve()
+            if not target.is_relative_to(root.resolve()) or not target.is_file():
+                raise ValueError("missing/escaping module import: " + path + " -> " + spec)
     if re.search(r"\b(fetch|XMLHttpRequest|WebSocket)\s*\(", js):
         raise ValueError("networking primitive in runtime")
     if "innerHTML" in js:
         raise ValueError("unsafe DOM HTML injection")
     if re.search(r"@import|url\s*\(\s*['\"]?https?://", css, re.I):
         raise ValueError("external CSS resource")
-    print("PASS: 5 offline runtime files, local dependencies, CSP, DOM injection and resource bounds")
+    print("PASS: 10 offline runtime files, local ES dependencies, CSP, DOM injection and resource bounds")
 
 if __name__ == "__main__":
     verify(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT)
