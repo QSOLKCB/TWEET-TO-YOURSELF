@@ -23,6 +23,11 @@ jobs:
         run: |
           node --check src/core.mjs
           node --check src/app.mjs
+          node --check src/reply-reactor.mjs
+          node --check src/reply-reactor-ui.mjs
+          node --check vendor/vanillajs/gf3/index.js
+          node --check vendor/vanillajs/symbolic-events/index.js
+          node --check vendor/vanillajs/audio2d/index.js
       - name: Run standard-library Node tests
         run: node --test tests/*.test.mjs
       - name: Verify static offline application
@@ -30,9 +35,12 @@ jobs:
       - name: Assemble public-only Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          mkdir -p site/src
+          mkdir -p site/src site/vendor/vanillajs/gf3 site/vendor/vanillajs/symbolic-events site/vendor/vanillajs/audio2d
           cp index.html style.css site/
-          cp src/app.mjs src/core.mjs src/archive-store.mjs site/src/
+          cp src/app.mjs src/core.mjs src/archive-store.mjs src/reply-reactor.mjs src/reply-reactor-ui.mjs site/src/
+          cp vendor/vanillajs/gf3/index.js site/vendor/vanillajs/gf3/
+          cp vendor/vanillajs/symbolic-events/index.js site/vendor/vanillajs/symbolic-events/
+          cp vendor/vanillajs/audio2d/index.js site/vendor/vanillajs/audio2d/
           printf '' > site/.nojekyll
           python3 scripts/verify_site.py site
       - name: Upload verified Pages artifact

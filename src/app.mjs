@@ -3,8 +3,10 @@
 import {STORAGE_KEY,MAX_CHARACTERS,initialState,hydrateState,addPost,
   automaticReply,nextWarning,receipt,HAT_STEPS,EARTH_FACTS,limitComposerText} from './core.mjs';
 import {ArchiveStore,StaleArchiveError} from './archive-store.mjs';
+import {installReplyReactor} from './reply-reactor-ui.mjs';
 
 const $=id=>document.getElementById(id);
+const replyReactor=installReplyReactor();
 let store,savedNotice='';
 try{
   store=new ArchiveStore(localStorage);
@@ -56,6 +58,7 @@ function renderFeed(){
   $('replyCount').textContent=format(state.posts.filter(p=>p.parentId!==null).length);
   const timeline=$('timeline');
   timeline.replaceChildren();
+  replyReactor.render(state);
   if(state.posts.length===0){
     const empty=node('div','empty');
     empty.append(node('strong','', 'NO ARGUMENTS DETECTED'),

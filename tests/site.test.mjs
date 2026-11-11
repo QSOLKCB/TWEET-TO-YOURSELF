@@ -18,6 +18,13 @@ test('one static offline entry and explicitly local ES module import',async()=>{
  assert.match(js,/node\('p','post-content',post\.text\)/);
  assert.match(js,/element\.textContent=text/);
  assert.match(js,/localStorage/);
+ assert.match(js,/installReplyReactor\(\)/);
+ assert.match(js,/replyReactor\.render\(state\)/);
+ for(const id of ['reply-reactor','reactorGrid','reactorStatus','reactorState',
+   'reactorTicks','reactorWins','reactorCount','reactorPlay','reactorStop',
+   'reactorWav','reactorExport','reactorPlaybackStatus']){
+   assert.ok(html.includes('id="'+id+'"'), 'missing reactor ID '+id);
+ }
  assert.doesNotMatch(html,/maxlength="280"/);
  assert.match(js,/limitComposerText\(composer\.value\)/);
  assert.match(js,/addEventListener\('storage'/);
