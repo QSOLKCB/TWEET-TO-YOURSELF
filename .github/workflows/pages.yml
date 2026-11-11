@@ -1,0 +1,57 @@
+name: Offline Self-Reply CI and GitHub Pages
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-reply-pages-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check src/core.mjs
+          node --check src/app.mjs
+      - name: Run standard-library Node tests
+        run: node --test tests/*.test.mjs
+      - name: Verify static offline application
+        run: python3 scripts/verify_site.py
+      - name: Assemble public-only Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p site/src
+          cp index.html style.css site/
+          cp src/app.mjs src/core.mjs src/archive-store.mjs site/src/
+          printf '' > site/.nojekyll
+          python3 scripts/verify_site.py site
+      - name: Upload verified Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
