@@ -15,7 +15,8 @@ test('one static offline entry and explicitly local ES module import',async()=>{
  assert.doesNotMatch(css,/@import|url\(\s*['"]?https?:/i);
  assert.doesNotMatch(js,/\bfetch\s*\(|\bWebSocket\s*\(|\bXMLHttpRequest\b/);
  assert.doesNotMatch(js,/\binnerHTML\b|\bouterHTML\b|\b(insertAdjacentHTML|eval)\s*\(/);
- assert.match(js,/textContent=post\.text/);
+ assert.match(js,/node\('p','post-content',post\.text\)/);
+ assert.match(js,/element\.textContent=text/);
  assert.match(js,/localStorage/);
 });
 test('app wires all interactive controls to actual DOM identities',async()=>{
