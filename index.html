@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b13">
+<meta name="description" content="Tweet to Yourself: an offline-first satire app for winning arguments against yourself, imaginary surveillance alerts, tinfoil hats and round-Earth evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>TWEET TO YOURSELF — The Reply Guy SDK</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+<header class="topbar">
+  <a class="logo" href="#top" aria-label="Tweet to Yourself home"><span class="logo-mark" aria-hidden="true">↩</span><span>TWEET<span class="slash">//</span>TO<span class="slash">//</span>YOURSELF</span></a>
+  <nav aria-label="Main navigation"><a href="#timeline-section">TIMELINE</a><a href="#advisor">PARODY AI</a><a href="#field-guide">FIELD GUIDE</a></nav>
+  <span class="topbadge"><span class="led" aria-hidden="true"></span> ZERO REAL TWEETS SENT</span>
+</header>
+<main id="top">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="bracket">[</span> THE WORLD'S MOST SELF-SUFFICIENT SOCIAL NETWORK <span class="bracket">]</span></div>
+    <h1 id="hero-title">WHY ARGUE<br>WITH STRANGERS<span class="question">?</span><br><em>ARGUE WITH YOURSELF.</em></h1>
+    <p class="hero-sub">Making it easier to tweet to yourself. The only platform where you're the poster, the reply guy, the fact-checker and the person demanding a source.</p>
+    <div class="hero-actions"><a class="button main-button" href="#timeline-section">START A SELF-ARGUMENT <span aria-hidden="true">↗</span></a><button class="button ghost-button" id="grassShortcut" type="button">INITIATE GRASS PROTOCOL</button></div>
+    <p class="fineprint">A PARODY WEB APP · NO X/TWITTER CONNECTION · NO REAL SURVEILLANCE DETECTION · WORKS OFFLINE</p>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+    <div class="head"><span>↩</span></div>
+    <span class="floating-tag tag-one">ME: SOURCE?</span>
+    <span class="floating-tag tag-two">ALSO ME: ME.</span>
+    <span class="floating-tag tag-three">100% AGREEMENT*</span>
+    <div class="hero-art-caption">*WITH THE CURRENT VERSION OF YOURSELF</div>
+  </div>
+</section>
+<div class="ticker" aria-label="Satirical product features"><span>UNLIMITED SELF-REPLIES</span><b>✳</b><span>ZERO EXTERNAL VALIDATION</span><b>✳</b><span>FULLY ARTIFICIAL PANIC</span><b>✳</b><span>NOW WITH ACTUAL GEOGRAPHY</span><b>✳</b><span>NO CLOUD. NO CRINGE LIMIT.</span></div>
+<section class="dashboard" aria-label="Self reply headquarters">
+  <div class="feed-col" id="timeline-section">
+    <div class="section-heading"><div><p class="kicker">MODULE 01 / SELF-REPLY ENGINE</p><h2>Your echo chamber. <span>Population: 1.</span></h2></div><span class="indicator">● ALL SYSTEMS SELF-REFERENTIAL</span></div>
+    <div class="composer panel">
+      <div class="composer-head"><span class="avatar" aria-hidden="true">ME</span><div><strong>You, again</strong><small>@replying_to_myself · Local simulation</small></div><span class="self-badge">VERIFIED BY ME ✓</span></div>
+      <div id="replyTarget" class="reply-target" hidden></div>
+      <form id="postForm">
+        <label class="sr-only" for="compose">Write your next self-tweet</label>
+        <textarea id="compose" maxlength="280" rows="3" placeholder="What deeply important thing will I disagree with myself about today?" aria-describedby="charCount"></textarea>
+        <div class="composer-foot"><span id="charCount" aria-live="polite">0 / 280</span><div class="compose-actions"><button id="cancelReply" type="button" class="small-button" hidden>Cancel reply</button><button class="button main-button post-button" type="submit">TWEET TO MYSELF ↗</button></div></div>
+      </form>
+      <div class="tools">
+        <button id="autoReply" type="button">↩ AUTO-ARGUE WITH YOURSELF</button>
+        <button id="downloadReceipt" type="button">↓ EXPORT THE RECEIPTS</button>
+        <button id="clearPosts" type="button">× CLEAR THE ECHO</button>
+      </div>
+      <p id="feedStatus" class="assistive-status" role="status" aria-live="polite">All posts stay in this browser. Nothing is published to social media.</p>
+    </div>
+    <div class="metrics" aria-label="Local self-reply statistics"><div><strong id="postCount">000</strong><span>POSTS BY YOU</span></div><div><strong id="replyCount">000</strong><span>REPLIES TO YOU</span></div><div><strong>000</strong><span>OUTSIDE OPINIONS</span></div></div>
+    <div class="timeline-top"><h3>THE VERY IMPORTANT TIMELINE</h3><span>NEWEST FIRST ↓</span></div>
+    <div id="timeline" class="timeline" aria-live="polite"></div>
+  </div>
+  <aside class="sidebar" aria-label="Imaginary advisory tools">
+    <section class="panel advisor" id="advisor" aria-labelledby="advisor-title">
+      <div class="panel-label"><span>MODULE 02 / CONSPIRACY GENERATOR</span><span class="on-indicator">◉ FICTION ONLY</span></div>
+      <div class="advisor-icon" aria-hidden="true">⚠</div>
+      <h2 id="advisor-title">S.E.L.F. <span>AI*</span></h2>
+      <p class="side-sub">Self-Echo Loop Facilitator. The world's least qualified imaginary intelligence agency.</p>
+      <div class="alert-shell"><span class="alert-label">[ PARODY WARNING // 001 ]</span><h3 id="warningTitle">AWAITING AN IMAGINARY THREAT</h3><p id="warningMessage">Press the button to receive a completely made-up surveillance alert and a scientifically useless countermeasure.</p><small id="warningAgency">SOURCE: NOBODY</small></div>
+      <p class="remedy" id="warningRemedy">Reminder: these are jokes, not real security information.</p>
+      <button class="button warning-button" type="button" id="scan">GENERATE ABSURD WARNING ↗</button>
+      <p class="ai-disclaimer">*Not an LLM, not an intelligence agency. Just local deterministic parody text. No surveillance or tracking claims are factual.</p>
+    </section>
+    <section class="panel grass" id="grass" aria-labelledby="grass-title">
+      <div class="panel-label">COUNTERMEASURE / GRASS-005</div>
+      <div class="grass-header"><span class="grass-icon" aria-hidden="true">☘</span><div><h2 id="grass-title">TOUCH GRASS.</h2><p>5 touches. 0 actual signal jamming.</p></div></div>
+      <div class="grass-pips" id="grassPips" aria-label="Grass touches completed"></div>
+      <button type="button" id="touchGrass" class="button grass-button">TOUCH VIRTUAL GRASS +1</button>
+      <p id="grassStatus" class="small-status" role="status" aria-live="polite">0 / 5 grass touches. Going outside is the premium feature.</p>
+    </section>
+  </aside>
+</section>
+<section id="field-guide" class="field-guide" aria-label="Satirical survival guides">
+  <div class="section-heading"><div><p class="kicker">MODULE 03 / MANDATORY FIELD TRAINING</p><h2>The Self-Reply Survival Kit<span>.</span></h2></div><span class="indicator">EDUCATION MEETS NONSENSE</span></div>
+  <div class="guide-grid">
+    <article class="panel guide hat" aria-labelledby="hat-title">
+      <div class="panel-label">GUIDE 001 / D.I.Y. DEFENCE (?)</div>
+      <div class="guide-icon" aria-hidden="true">△</div><h3 id="hat-title">HOW TO MAKE A<br><em>TINFOIL HAT.</em></h3>
+      <p>The ultimate in completely ineffective imaginary counterintelligence fashion.</p>
+      <div id="hatSteps" class="checklist"></div>
+      <div class="progress-row"><span id="hatProgress">0 / 5 COMPLETED</span><span>NO SCIENTIFIC PROTECTION</span></div>
+    </article>
+    <article class="panel guide earth" aria-labelledby="earth-title">
+      <div class="panel-label">GUIDE 002 / ACTUAL SCIENCE</div>
+      <div class="planet" aria-hidden="true"><div class="planet-inner"></div><div class="planet-ring"></div><span>EARTH<br>IS ROUND(ISH)</span></div>
+      <h3 id="earth-title">WHY THE EARTH<br><em>ISN'T FLAT.</em></h3>
+      <p>We made one part of the app genuinely educational. Sorry about that.</p>
+      <div class="fact-box"><strong id="factTitle">Two shadows, one curved Earth</strong><p id="factDetail"></p></div>
+      <button id="nextFact" type="button" class="button ghost-button">NEXT ACTUAL FACT ↗</button>
+    </article>
+  </div>
+</section>
+<footer><div class="footer-brand">TWEET<span>//</span>TO<span>//</span>YOURSELF <small>v0.1.0 / REPLY GUY SDK</small></div>
+  <p>MAKING IT EASIER TO TWEET TO YOURSELF. · APACHE-2.0 · OFFLINE-FIRST · <strong>ALL SURVEILLANCE ALERTS ARE FICTIONAL.</strong></p>
+  <p class="footer-bottom">THIS IS NOT A PRODUCT. THIS IS INDEPENDENCE. 👽</p>
+</footer>
+</main>
+<script type="module" src="./src/app.mjs"></script>
+</body>
+</html>
